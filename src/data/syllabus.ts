@@ -5,6 +5,7 @@ import { sqlInjectionModule } from './modules/web/sql-injection';
 import { commandInjectionModule } from './modules/web/command-injection';
 import { directoryTraversalModule } from './modules/web/directory-traversal';
 import { idorModule, xssModule } from './modules/web/idor';
+import { csrfModule, fileUploadModule, jwtModule, sstiModule } from './modules/web/web-part2';
 
 // Import Infrastructure
 import { pamModule } from './modules/infrastructure/pam';
@@ -22,11 +23,13 @@ import { siemModule } from './modules/soc/siem';
 // Import Digital Forensic
 import { fileCarvingModule, networkForensicModule, memoryForensicModule } from './modules/digital-forensic/forensics';
 import { osForensicModule } from './modules/digital-forensic/os-forensic';
+import { malwareAnalysisModule } from './modules/digital-forensic/malware';
 
 // Import Binary Exploitation
 import { bufferOverflowModule } from './modules/binary/buffer-overflow';
 import { formatStringModule } from './modules/binary/format-string';
 import { bypassProtectionModule } from './modules/binary/bypass-protection';
+import { integerOverflowModule, shellcodeModule, ropChainModule } from './modules/binary/binary-part2';
 
 // Helper to create placeholder modules
 const createPlaceholder = (title: string, category: LKSModule['category'], slug: string): LKSModule => ({
@@ -34,7 +37,7 @@ const createPlaceholder = (title: string, category: LKSModule['category'], slug:
   slug,
   title,
   category,
-  description: 'Materi ini akan segera ditambahkan. Tetap semangat belajar!',
+  description: 'Materi ini sedang dalam tahap penyusunan oleh tim kurikulum Init[0].',
   sections: [],
   isPlaceholder: true,
 });
@@ -61,7 +64,7 @@ export const syllabus: SyllabusItem[] = [
       createPlaceholder('Attack on AES', 'Offensive / Red Team Based CTF', 'attack-on-aes'),
       createPlaceholder('Attack on ECC', 'Offensive / Red Team Based CTF', 'attack-on-ecc'),
       createPlaceholder('Attack on DSA', 'Offensive / Red Team Based CTF', 'attack-on-dsa'),
-      createPlaceholder('Hashing (Length Extension Attack)', 'Offensive / Red Team Based CTF', 'hashing-length-extension'),
+      createPlaceholder('Hashing', 'Offensive / Red Team Based CTF', 'hashing-length-extension'),
     ]
   },
   {
@@ -73,22 +76,22 @@ export const syllabus: SyllabusItem[] = [
       directoryTraversalModule,
       idorModule,
       xssModule,
+      csrfModule,
+      fileUploadModule,
+      jwtModule,
+      sstiModule,
       createPlaceholder('Account Takeover', 'Web Exploitation', 'account-takeover'),
       createPlaceholder('Business Logic Errors', 'Web Exploitation', 'business-logic-errors'),
       createPlaceholder('CVE Exploits', 'Web Exploitation', 'cve-exploits'),
-      createPlaceholder('CSRF', 'Web Exploitation', 'csrf'),
       createPlaceholder('Dependency Confusion', 'Web Exploitation', 'dependency-confusion'),
       createPlaceholder('GraphQL Injection', 'Web Exploitation', 'graphql-injection'),
       createPlaceholder('HTTP Parameter Pollution', 'Web Exploitation', 'http-parameter-pollution'),
       createPlaceholder('Insecure Deserialization', 'Web Exploitation', 'insecure-deserialization'),
-      createPlaceholder('JSON Web Token', 'Web Exploitation', 'jwt'),
       createPlaceholder('NoSQL Injection', 'Web Exploitation', 'nosql-injection'),
       createPlaceholder('Prototype Pollution', 'Web Exploitation', 'prototype-pollution'),
       createPlaceholder('Race Condition', 'Web Exploitation', 'race-condition'),
       createPlaceholder('Request Smuggling', 'Web Exploitation', 'request-smuggling'),
-      createPlaceholder('Server Side Template Injection', 'Web Exploitation', 'ssti'),
       createPlaceholder('Type Juggling', 'Web Exploitation', 'type-juggling'),
-      createPlaceholder('Upload Insecure Files', 'Web Exploitation', 'insecure-file-upload'),
       createPlaceholder('Web Sockets', 'Web Exploitation', 'web-sockets'),
       createPlaceholder('XXE Injection', 'Web Exploitation', 'xxe'),
       createPlaceholder('OWASP API Security Top 10', 'Web Exploitation', 'owasp-api-top-10'),
@@ -99,20 +102,20 @@ export const syllabus: SyllabusItem[] = [
     title: 'Binary Exploitation',
     modules: [
       bufferOverflowModule,
+      integerOverflowModule,
+      shellcodeModule,
       formatStringModule,
+      ropChainModule,
       bypassProtectionModule,
-      createPlaceholder('Integer overflow / underflow', 'Binary Exploitation', 'integer-overflow'),
-      createPlaceholder('Shellcode', 'Binary Exploitation', 'shellcode'),
-      createPlaceholder('ROP chain', 'Binary Exploitation', 'rop-chain'),
       createPlaceholder('Type Confusion', 'Binary Exploitation', 'type-confusion'),
-      createPlaceholder('Uninitialized Memory Use', 'Binary Exploitation', 'uninitialized-memory'),
+      createPlaceholder('Uninitialized Memory', 'Binary Exploitation', 'uninitialized-memory'),
     ]
   },
   {
     id: 'reverse-engineering',
     title: 'Reverse Engineering',
     modules: [
-      createPlaceholder('Static Analysis (Reconstruct Algorithm), z3', 'Reverse Engineering', 'static-analysis'),
+      createPlaceholder('Static Analysis (Reconstruct Algorithm)', 'Reverse Engineering', 'static-analysis'),
       createPlaceholder('Dynamic Analysis (Tracing, GDB)', 'Reverse Engineering', 'dynamic-analysis'),
       createPlaceholder('Low Level File Formats', 'Reverse Engineering', 'low-level-file-formats'),
       createPlaceholder('Anti RE', 'Reverse Engineering', 'anti-re'),
@@ -131,7 +134,7 @@ export const syllabus: SyllabusItem[] = [
       networkForensicModule,
       osForensicModule,
       memoryForensicModule,
-      createPlaceholder('Malware Analysis', 'Digital Forensic', 'malware-analysis'),
+      malwareAnalysisModule,
     ]
   },
   {
