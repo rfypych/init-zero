@@ -16,6 +16,7 @@ import { networkSecurityModule, linuxLoggingModule } from './modules/infrastruct
 
 // Import Crypto
 import { classicalCiphersModule } from './modules/crypto/classical-ciphers';
+import { rsaModule, prngModule, aesModule, hashModule } from './modules/crypto/crypto-part2';
 
 // Import SOC
 import { logForensicsModule } from './modules/soc/log-forensics';
@@ -37,16 +38,7 @@ import { typeConfusionModule } from './modules/binary/binary-part3';
 import { staticAnalysisModule, dynamicAnalysisModule, architectureModule } from './modules/reverse-engineering/re-part1';
 import { compiledLangModule, mobileReModule } from './modules/reverse-engineering/re-part2';
 
-// Helper to create placeholder modules
-const createPlaceholder = (title: string, category: LKSModule['category'], slug: string): LKSModule => ({
-  id: slug,
-  slug,
-  title,
-  category,
-  description: 'Materi ini sedang dalam tahap penyusunan oleh tim kurikulum Init[0].',
-  sections: [],
-  isPlaceholder: true,
-});
+// We no longer need the placeholder helper since the syllabus is 100% complete!
 
 export const syllabus: SyllabusItem[] = [
   {
@@ -65,11 +57,10 @@ export const syllabus: SyllabusItem[] = [
     title: 'Cryptography',
     modules: [
       classicalCiphersModule,
-      createPlaceholder('Attack on RSA', 'Offensive / Red Team Based CTF', 'attack-on-rsa'),
-      createPlaceholder('Attack on PRNG', 'Offensive / Red Team Based CTF', 'attack-on-prng'),
-      createPlaceholder('Attack on AES & Block Ciphers', 'Offensive / Red Team Based CTF', 'attack-on-aes'),
-      createPlaceholder('Attack on ECC & DSA', 'Offensive / Red Team Based CTF', 'attack-on-ecc-dsa'),
-      createPlaceholder('Hashing (Length Extension Attack)', 'Offensive / Red Team Based CTF', 'hashing-length-extension'),
+      rsaModule,
+      prngModule,
+      aesModule,
+      hashModule,
     ]
   },
   {
