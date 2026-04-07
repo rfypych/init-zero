@@ -1,10 +1,32 @@
 import { SyllabusItem, LKSModule } from '../types';
+
+// Import Web
 import { sqlInjectionModule } from './modules/web/sql-injection';
 import { commandInjectionModule } from './modules/web/command-injection';
 import { directoryTraversalModule } from './modules/web/directory-traversal';
+import { idorModule, xssModule } from './modules/web/idor';
+
+// Import Infrastructure
 import { pamModule } from './modules/infrastructure/pam';
+import { exposedServicesModule } from './modules/infrastructure/exposed-services';
+import { defaultConfigsModule } from './modules/infrastructure/default-configs';
+import { networkSecurityModule, linuxLoggingModule } from './modules/infrastructure/network-security';
+
+// Import Crypto
 import { classicalCiphersModule } from './modules/crypto/classical-ciphers';
+
+// Import SOC
 import { logForensicsModule } from './modules/soc/log-forensics';
+import { siemModule } from './modules/soc/siem';
+
+// Import Digital Forensic
+import { fileCarvingModule, networkForensicModule, memoryForensicModule } from './modules/digital-forensic/forensics';
+import { osForensicModule } from './modules/digital-forensic/os-forensic';
+
+// Import Binary Exploitation
+import { bufferOverflowModule } from './modules/binary/buffer-overflow';
+import { formatStringModule } from './modules/binary/format-string';
+import { bypassProtectionModule } from './modules/binary/bypass-protection';
 
 // Helper to create placeholder modules
 const createPlaceholder = (title: string, category: LKSModule['category'], slug: string): LKSModule => ({
@@ -23,10 +45,10 @@ export const syllabus: SyllabusItem[] = [
     title: 'Infrastructure Hardening',
     modules: [
       pamModule,
-      createPlaceholder('Dangerous/Exposed Services', 'Infrastructure Hardening', 'exposed-services'),
-      createPlaceholder('Common Default Configurations', 'Infrastructure Hardening', 'default-configs'),
-      createPlaceholder('Network Service Security', 'Infrastructure Hardening', 'network-service-security'),
-      createPlaceholder('Logging', 'Infrastructure Hardening', 'linux-logging'),
+      exposedServicesModule,
+      defaultConfigsModule,
+      networkSecurityModule,
+      linuxLoggingModule,
     ],
   },
   {
@@ -49,6 +71,8 @@ export const syllabus: SyllabusItem[] = [
       sqlInjectionModule,
       commandInjectionModule,
       directoryTraversalModule,
+      idorModule,
+      xssModule,
       createPlaceholder('Account Takeover', 'Web Exploitation', 'account-takeover'),
       createPlaceholder('Business Logic Errors', 'Web Exploitation', 'business-logic-errors'),
       createPlaceholder('CVE Exploits', 'Web Exploitation', 'cve-exploits'),
@@ -57,7 +81,6 @@ export const syllabus: SyllabusItem[] = [
       createPlaceholder('GraphQL Injection', 'Web Exploitation', 'graphql-injection'),
       createPlaceholder('HTTP Parameter Pollution', 'Web Exploitation', 'http-parameter-pollution'),
       createPlaceholder('Insecure Deserialization', 'Web Exploitation', 'insecure-deserialization'),
-      createPlaceholder('IDOR', 'Web Exploitation', 'idor'),
       createPlaceholder('JSON Web Token', 'Web Exploitation', 'jwt'),
       createPlaceholder('NoSQL Injection', 'Web Exploitation', 'nosql-injection'),
       createPlaceholder('Prototype Pollution', 'Web Exploitation', 'prototype-pollution'),
@@ -67,7 +90,6 @@ export const syllabus: SyllabusItem[] = [
       createPlaceholder('Type Juggling', 'Web Exploitation', 'type-juggling'),
       createPlaceholder('Upload Insecure Files', 'Web Exploitation', 'insecure-file-upload'),
       createPlaceholder('Web Sockets', 'Web Exploitation', 'web-sockets'),
-      createPlaceholder('XSS Injection', 'Web Exploitation', 'xss'),
       createPlaceholder('XXE Injection', 'Web Exploitation', 'xxe'),
       createPlaceholder('OWASP API Security Top 10', 'Web Exploitation', 'owasp-api-top-10'),
     ],
@@ -76,14 +98,14 @@ export const syllabus: SyllabusItem[] = [
     id: 'binary-exploitation',
     title: 'Binary Exploitation',
     modules: [
-      createPlaceholder('Buffer overflow', 'Binary Exploitation', 'buffer-overflow'),
+      bufferOverflowModule,
+      formatStringModule,
+      bypassProtectionModule,
       createPlaceholder('Integer overflow / underflow', 'Binary Exploitation', 'integer-overflow'),
       createPlaceholder('Shellcode', 'Binary Exploitation', 'shellcode'),
-      createPlaceholder('Format String', 'Binary Exploitation', 'format-string'),
       createPlaceholder('ROP chain', 'Binary Exploitation', 'rop-chain'),
       createPlaceholder('Type Confusion', 'Binary Exploitation', 'type-confusion'),
       createPlaceholder('Uninitialized Memory Use', 'Binary Exploitation', 'uninitialized-memory'),
-      createPlaceholder('Bypass protection', 'Binary Exploitation', 'bypass-protection'),
     ]
   },
   {
@@ -105,10 +127,10 @@ export const syllabus: SyllabusItem[] = [
     id: 'digital-forensic',
     title: 'Digital Forensic',
     modules: [
-      createPlaceholder('File Carving', 'Digital Forensic', 'file-carving'),
-      createPlaceholder('Network Forensic', 'Digital Forensic', 'network-forensic'),
-      createPlaceholder('OS Forensic', 'Digital Forensic', 'os-forensic'),
-      createPlaceholder('Memory Forensic', 'Digital Forensic', 'memory-forensic'),
+      fileCarvingModule,
+      networkForensicModule,
+      osForensicModule,
+      memoryForensicModule,
       createPlaceholder('Malware Analysis', 'Digital Forensic', 'malware-analysis'),
     ]
   },
@@ -117,7 +139,7 @@ export const syllabus: SyllabusItem[] = [
     title: 'SOC',
     modules: [
       logForensicsModule,
-      createPlaceholder('SIEM Utilization', 'SOC', 'siem-utilization'),
+      siemModule,
     ]
   }
 ];

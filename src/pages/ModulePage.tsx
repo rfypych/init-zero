@@ -10,6 +10,8 @@ import { MockDirTraversal } from '../components/simulators/MockDirTraversal';
 import { MockPAMConfig } from '../components/simulators/MockPAMConfig';
 import { MockCipherSolver } from '../components/simulators/MockCipherSolver';
 import { MockLogAnalyzer } from '../components/simulators/MockLogAnalyzer';
+import { MockTerminal } from '../components/simulators/MockTerminal';
+import { MockCodeAnalyzer } from '../components/simulators/MockCodeAnalyzer';
 import { ContentBlock } from '../types';
 
 const ComponentMap: Record<string, React.FC> = {
@@ -19,6 +21,8 @@ const ComponentMap: Record<string, React.FC> = {
   MockPAMConfig,
   MockCipherSolver,
   MockLogAnalyzer,
+  MockTerminal,
+  MockCodeAnalyzer,
 };
 
 const renderBlock = (block: ContentBlock) => {
