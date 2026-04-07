@@ -11,7 +11,7 @@ export const LandingPage = () => {
       </div>
 
       <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
-        Persiapan Kompetisi <br className="hidden md:block"/>
+        Init[0] - Persiapan Kompetisi <br className="hidden md:block"/>
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
           Cyber Security
         </span>

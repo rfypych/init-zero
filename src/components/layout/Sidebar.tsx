@@ -36,7 +36,7 @@ export const Sidebar = () => {
       <div className="p-6">
         <h2 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500 flex items-center gap-2">
           <Shield className="w-6 h-6 text-blue-500" />
-          LKS Jatim 2026
+          Init[0]
         </h2>
         <p className="text-xs text-zinc-500 mt-1">Cyber Security Preparation</p>
       </div>
