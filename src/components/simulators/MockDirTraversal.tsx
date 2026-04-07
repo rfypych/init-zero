@@ -24,7 +24,7 @@ bin:x:2:2:bin:/bin:/usr/sbin/nologin
 sys:x:3:3:sys:/dev:/usr/sbin/nologin
 sync:x:4:65534:sync:/bin:/bin/sync
 games:x:5:60:games:/usr/games:/usr/sbin/nologin
-lks:x:1000:1000:LKS_Student,,,:/home/lks:/bin/bash
+ctf:x:1000:1000:CTF_Player,,,:/home/CTF:/bin/bash
 INIT0{P4th_Tr4v3rs4l_M4st3r}`);
     } else {
       setIsImage(false);

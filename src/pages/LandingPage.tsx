@@ -7,18 +7,18 @@ export const LandingPage = () => {
     <div className="flex-1 max-w-4xl pt-20 pb-24 mx-auto flex flex-col items-center text-center">
       <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-sm font-medium mb-8">
         <Shield className="w-4 h-4" />
-        <span>LKS Jawa Timur 2026</span>
+        <span>Cyber Security Learning Platform</span>
       </div>
 
       <h1 className="text-5xl md:text-6xl font-extrabold text-white tracking-tight mb-6">
-        Init[0] - Persiapan Kompetisi <br className="hidden md:block"/>
+        Init[0] - Platform Belajar <br className="hidden md:block"/>
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
           Cyber Security
         </span>
       </h1>
 
       <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mb-12 leading-relaxed">
-        Platform pembelajaran komprehensif yang dirancang khusus untuk membedah kisi-kisi teknis LKS tingkat Provinsi Jawa Timur. Belajar dari nol dengan lab interaktif tanpa perlu setup server.
+        Platform pembelajaran komprehensif yang dirancang khusus untuk membedah kisi-kisi teknis CTF tingkat Provinsi. Belajar dari nol dengan lab interaktif tanpa perlu setup server.
       </p>
 
       <Link

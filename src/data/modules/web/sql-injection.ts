@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const sqlInjectionModule: LKSModule = {
+export const sqlInjectionModule: CyberSecModule = {
   id: 'sql-injection',
   slug: 'sql-injection',
   title: 'SQL Injection (SQLi)',

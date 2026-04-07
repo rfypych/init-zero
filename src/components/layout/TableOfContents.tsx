@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { LKSModule } from '../../types';
+import { CyberSecModule } from '../../types';
 
-export const TableOfContents = ({ module }: { module: LKSModule }) => {
+export const TableOfContents = ({ module }: { module: CyberSecModule }) => {
   const [activeId, setActiveId] = useState<string>('');
 
   useEffect(() => {

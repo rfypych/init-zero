@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const commandInjectionModule: LKSModule = {
+export const commandInjectionModule: CyberSecModule = {
   id: 'command-injection',
   slug: 'command-injection',
   title: 'Command Injection',

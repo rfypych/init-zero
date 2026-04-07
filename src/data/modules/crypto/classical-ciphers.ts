@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const classicalCiphersModule: LKSModule = {
+export const classicalCiphersModule: CyberSecModule = {
   id: 'classical-ciphers',
   slug: 'classical-ciphers',
   title: 'Classical Ciphers',

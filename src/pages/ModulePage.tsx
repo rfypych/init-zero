@@ -1,24 +1,30 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { getModuleBySlug } from '../data/syllabus';
 import { TableOfContents } from '../components/layout/TableOfContents';
 import { QuizSystem } from '../components/quiz/QuizSystem';
-import { AlertCircle, Code, Info, Terminal } from 'lucide-react';
+import { ModuleNavigation } from '../components/layout/ModuleNavigation';
+import { AlertCircle, Code, Info, Terminal, ShieldCheck } from 'lucide-react';
 import { MockSQLiForm } from '../components/simulators/MockSQLiForm';
 import { MockCmdInjection } from '../components/simulators/MockCmdInjection';
 import { MockDirTraversal } from '../components/simulators/MockDirTraversal';
 import { MockPAMConfig } from '../components/simulators/MockPAMConfig';
 import { MockCipherSolver } from '../components/simulators/MockCipherSolver';
 import { MockLogAnalyzer } from '../components/simulators/MockLogAnalyzer';
+import { MockTerminal } from '../components/simulators/MockTerminal';
+import { MockCodeAnalyzer } from '../components/simulators/MockCodeAnalyzer';
 import { ContentBlock } from '../types';
+import { useProgressStore } from '../store/progressStore';
 
-const ComponentMap: Record<string, React.FC> = {
+const ComponentMap: Record<string, React.FC<any>> = {
   MockSQLiForm,
   MockCmdInjection,
   MockDirTraversal,
   MockPAMConfig,
   MockCipherSolver,
   MockLogAnalyzer,
+  MockTerminal,
+  MockCodeAnalyzer,
 };
 
 const renderBlock = (block: ContentBlock) => {
@@ -26,12 +32,13 @@ const renderBlock = (block: ContentBlock) => {
     case 'text':
       // Basic markdown parsing for bold and inline code
       const parsedContent = block.content
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/`(.*?)`/g, '<code class="bg-zinc-800 text-blue-300 px-1.5 py-0.5 rounded text-sm font-mono">$1</code>');
+        .replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>')
+        .replace(/`(.*?)`/g, '<code class="bg-blue-500/10 text-blue-300 px-1.5 py-0.5 rounded text-sm font-mono border border-blue-500/20">$1</code>')
+        .replace(/\n/g, '<br/>');
       return (
         <p
           key={block.id}
-          className="text-zinc-300 leading-relaxed mb-4 text-[15px]"
+          className="text-zinc-400 leading-relaxed mb-5 text-[15px] sm:text-base tracking-wide"
           dangerouslySetInnerHTML={{ __html: parsedContent }}
         />
       );
@@ -41,29 +48,36 @@ const renderBlock = (block: ContentBlock) => {
       const isDanger = block.metadata?.type === 'danger';
 
       const alertClass = isDanger
-        ? 'bg-red-500/10 border-red-500/20 text-red-200'
+        ? 'bg-red-500/10 border-red-500/20 text-red-200 shadow-[0_0_15px_rgba(239,68,68,0.05)]'
         : isWarning
-          ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-200'
-          : 'bg-blue-500/10 border-blue-500/20 text-blue-200';
+          ? 'bg-yellow-500/10 border-yellow-500/20 text-yellow-200 shadow-[0_0_15px_rgba(234,179,8,0.05)]'
+          : 'bg-blue-500/10 border-blue-500/20 text-blue-200 shadow-[0_0_15px_rgba(59,130,246,0.05)]';
 
       const Icon = isDanger || isWarning ? AlertCircle : Info;
 
       return (
-        <div key={block.id} className={`p-4 rounded-lg border flex gap-3 mb-6 ${alertClass}`}>
-          <Icon className="w-5 h-5 flex-shrink-0 mt-0.5" />
-          <div className="text-sm leading-relaxed whitespace-pre-line">{block.content}</div>
+        <div key={block.id} className={`p-5 rounded-xl border flex gap-4 mb-8 ${alertClass}`}>
+          <Icon className="w-6 h-6 flex-shrink-0 mt-0.5 opacity-80" />
+          <div className="text-[15px] leading-relaxed whitespace-pre-line font-medium">{block.content}</div>
         </div>
       );
 
     case 'code':
       return (
-        <div key={block.id} className="mb-6 rounded-lg overflow-hidden border border-zinc-800 bg-zinc-950">
-          <div className="flex items-center gap-2 px-4 py-2 bg-zinc-900 border-b border-zinc-800 text-xs text-zinc-400 font-mono">
-            {block.metadata?.language === 'bash' ? <Terminal className="w-4 h-4" /> : <Code className="w-4 h-4" />}
-            {block.metadata?.language || 'text'}
+        <div key={block.id} className="mb-8 rounded-xl overflow-hidden border border-zinc-800 bg-[#0d0d0d] shadow-lg">
+          <div className="flex items-center justify-between px-4 py-2.5 bg-zinc-900 border-b border-zinc-800">
+             <div className="flex items-center gap-2 text-xs text-zinc-400 font-mono font-medium uppercase tracking-wider">
+               {block.metadata?.language === 'bash' ? <Terminal className="w-4 h-4" /> : <Code className="w-4 h-4" />}
+               {block.metadata?.language || 'text'}
+             </div>
+             <div className="flex gap-1.5">
+               <div className="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+               <div className="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+               <div className="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+             </div>
           </div>
-          <pre className="p-4 overflow-x-auto">
-            <code className="text-sm font-mono text-zinc-300 whitespace-pre">
+          <pre className="p-5 overflow-x-auto custom-scrollbar">
+            <code className="text-sm font-mono text-zinc-300 whitespace-pre leading-relaxed">
               {block.content}
             </code>
           </pre>
@@ -73,7 +87,7 @@ const renderBlock = (block: ContentBlock) => {
     case 'interactive':
       const Component = ComponentMap[block.metadata?.component];
       if (!Component) return <div key={block.id} className="text-red-500 p-4 border border-red-500 rounded my-4">Component {block.metadata?.component} not found</div>;
-      return <Component key={block.id} />;
+      return <Component key={block.id} {...block.metadata} />;
 
     default:
       return null;
@@ -83,14 +97,22 @@ const renderBlock = (block: ContentBlock) => {
 export const ModulePage = () => {
   const { slug } = useParams<{ slug: string }>();
   const module = useMemo(() => slug ? getModuleBySlug(slug) : null, [slug]);
+  const { isModuleCompleted } = useProgressStore();
+
+  // Scroll to top on module change
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [slug]);
 
   if (!module) {
     return <Navigate to="/" replace />;
   }
 
+  const isCompleted = isModuleCompleted(module.slug);
+
   if (module.isPlaceholder) {
     return (
-      <div className="flex-1 max-w-3xl pt-12">
+      <div className="flex-1 w-full max-w-3xl pt-8 lg:pt-12">
         <h1 className="text-3xl font-bold mb-4">{module.title}</h1>
         <div className="inline-block px-3 py-1 bg-zinc-800 text-zinc-400 rounded-full text-xs font-semibold uppercase tracking-wider mb-8">
           {module.category}
@@ -106,22 +128,36 @@ export const ModulePage = () => {
 
   return (
     <>
-      <div className="flex-1 max-w-3xl pt-8 pb-24">
-        <header className="mb-12">
-          <div className="inline-block px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider mb-4">
-            {module.category}
+      <div className="flex-1 w-full max-w-3xl pt-4 lg:pt-12 pb-24">
+        <header className="mb-14">
+          <div className="flex items-center gap-3 mb-5 flex-wrap">
+            <div className="px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-semibold uppercase tracking-wider">
+              {module.category}
+            </div>
+            {isCompleted && (
+              <div className="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                Completed
+              </div>
+            )}
           </div>
-          <h1 className="text-4xl font-extrabold text-white mb-4 tracking-tight">{module.title}</h1>
-          <p className="text-lg text-zinc-400 leading-relaxed">{module.description}</p>
+
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-white mb-6 tracking-tight leading-tight">
+            {module.title}
+          </h1>
+          <p className="text-lg sm:text-xl text-zinc-400 leading-relaxed font-light">
+            {module.description}
+          </p>
         </header>
 
         <div className="space-y-16">
           {module.sections.map((section) => (
-            <section key={section.id} id={section.id} className="scroll-mt-24">
-              <h2 className="text-2xl font-bold text-zinc-100 mb-6 border-b border-zinc-800 pb-2">
+            <section key={section.id} id={section.id} className="scroll-mt-32">
+              <h2 className="text-2xl sm:text-3xl font-bold text-zinc-100 mb-8 flex items-center gap-4">
+                <span className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-800 flex items-center justify-center text-sm text-zinc-500 font-mono">#</span>
                 {section.title}
               </h2>
-              <div className="space-y-2">
+              <div className="space-y-4">
                 {section.blocks.map(renderBlock)}
               </div>
             </section>
@@ -129,7 +165,10 @@ export const ModulePage = () => {
         </div>
 
         {module.quiz && <QuizSystem quiz={module.quiz} />}
+
+        <ModuleNavigation currentSlug={module.slug} />
       </div>
+
       <TableOfContents module={module} />
     </>
   );
