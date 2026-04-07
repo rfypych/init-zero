@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const idorModule: LKSModule = {
+export const idorModule: CyberSecModule = {
   id: 'idor',
   slug: 'idor',
   title: 'Insecure Direct Object References (IDOR)',
@@ -61,7 +61,7 @@ export const idorModule: LKSModule = {
   }
 };
 
-export const xssModule: LKSModule = {
+export const xssModule: CyberSecModule = {
   id: 'xss',
   slug: 'xss',
   title: 'Cross-Site Scripting (XSS)',

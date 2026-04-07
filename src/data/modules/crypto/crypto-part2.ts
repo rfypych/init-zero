@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const rsaModule: LKSModule = {
+export const rsaModule: CyberSecModule = {
   id: 'attack-on-rsa',
   slug: 'attack-on-rsa',
   title: 'Attack on RSA',
@@ -45,7 +45,7 @@ export const rsaModule: LKSModule = {
   }
 };
 
-export const prngModule: LKSModule = {
+export const prngModule: CyberSecModule = {
   id: 'attack-on-prng',
   slug: 'attack-on-prng',
   title: 'Attack on PRNG',
@@ -95,7 +95,7 @@ export const prngModule: LKSModule = {
   }
 };
 
-export const aesModule: LKSModule = {
+export const aesModule: CyberSecModule = {
   id: 'attack-on-aes',
   slug: 'attack-on-aes',
   title: 'Attack on AES & Block Ciphers',
@@ -149,7 +149,7 @@ export const aesModule: LKSModule = {
   }
 };
 
-export const hashModule: LKSModule = {
+export const hashModule: CyberSecModule = {
   id: 'hashing-length-extension',
   slug: 'hashing-length-extension',
   title: 'Hashing & Length Extension Attack',

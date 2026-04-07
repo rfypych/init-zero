@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const osForensicModule: LKSModule = {
+export const osForensicModule: CyberSecModule = {
   id: 'os-forensic',
   slug: 'os-forensic',
   title: 'OS Forensic',

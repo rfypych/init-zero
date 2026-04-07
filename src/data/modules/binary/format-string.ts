@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const formatStringModule: LKSModule = {
+export const formatStringModule: CyberSecModule = {
   id: 'format-string',
   slug: 'format-string',
   title: 'Format String Vulnerability',

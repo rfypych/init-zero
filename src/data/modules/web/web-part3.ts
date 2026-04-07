@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const logicErrorsModule: LKSModule = {
+export const logicErrorsModule: CyberSecModule = {
   id: 'business-logic-errors',
   slug: 'business-logic-errors',
   title: 'Business Logic Errors & Account Takeover',
@@ -44,7 +44,7 @@ export const logicErrorsModule: LKSModule = {
   }
 };
 
-export const apiSecurityModule: LKSModule = {
+export const apiSecurityModule: CyberSecModule = {
   id: 'owasp-api-top-10',
   slug: 'owasp-api-top-10',
   title: 'OWASP API Security Top 10 & Advanced Web',

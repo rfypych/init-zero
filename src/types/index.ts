@@ -46,7 +46,7 @@ export interface ModuleSection {
   blocks: ContentBlock[];
 }
 
-export interface LKSModule {
+export interface CyberSecModule {
   id: string;
   slug: string;
   title: string;
@@ -70,5 +70,5 @@ export type SyllabusCategory =
 export interface SyllabusItem {
   id: string;
   title: string;
-  modules: LKSModule[];
+  modules: CyberSecModule[];
 }

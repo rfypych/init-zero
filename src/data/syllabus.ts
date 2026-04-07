@@ -1,4 +1,4 @@
-import { SyllabusItem, LKSModule } from '../types';
+import { SyllabusItem, CyberSecModule } from '../types';
 
 // Import Web
 import { sqlInjectionModule } from './modules/web/sql-injection';
@@ -125,7 +125,7 @@ export const syllabus: SyllabusItem[] = [
   }
 ];
 
-export const getModuleBySlug = (slug: string): LKSModule | undefined => {
+export const getModuleBySlug = (slug: string): CyberSecModule | undefined => {
   for (const item of syllabus) {
     for (const module of item.modules) {
       if (module.slug === slug) {

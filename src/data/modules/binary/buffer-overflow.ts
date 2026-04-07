@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const bufferOverflowModule: LKSModule = {
+export const bufferOverflowModule: CyberSecModule = {
   id: 'buffer-overflow',
   slug: 'buffer-overflow',
   title: 'Buffer Overflow',

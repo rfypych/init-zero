@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const staticAnalysisModule: LKSModule = {
+export const staticAnalysisModule: CyberSecModule = {
   id: 'static-analysis',
   slug: 'static-analysis',
   title: 'Static Analysis & z3 Theorem Prover',
@@ -54,7 +54,7 @@ export const staticAnalysisModule: LKSModule = {
   }
 };
 
-export const dynamicAnalysisModule: LKSModule = {
+export const dynamicAnalysisModule: CyberSecModule = {
   id: 'dynamic-analysis',
   slug: 'dynamic-analysis',
   title: 'Dynamic Analysis (GDB) & Anti-RE',
@@ -109,7 +109,7 @@ export const dynamicAnalysisModule: LKSModule = {
   }
 };
 
-export const architectureModule: LKSModule = {
+export const architectureModule: CyberSecModule = {
   id: 'architecture',
   slug: 'architecture',
   title: 'Architecture & Low Level Formats',

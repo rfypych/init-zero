@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const typeConfusionModule: LKSModule = {
+export const typeConfusionModule: CyberSecModule = {
   id: 'type-confusion',
   slug: 'type-confusion',
   title: 'Type Confusion & Uninitialized Memory',

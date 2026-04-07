@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const defaultConfigsModule: LKSModule = {
+export const defaultConfigsModule: CyberSecModule = {
   id: 'default-configs',
   slug: 'default-configs',
   title: 'Common Default Configurations',

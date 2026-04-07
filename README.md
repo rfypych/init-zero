@@ -13,13 +13,13 @@
 
 ## 🛡️ Tentang Proyek
 
-**Init[0]** adalah platform pembelajaran interaktif berbasis web (E-Learning) yang dirancang secara khusus untuk persiapan **Lomba Kompetensi Siswa (LKS) Tingkat Nasional** pada bidang **Cyber Security**.
+**Init[0]** adalah platform pembelajaran interaktif berbasis web (E-Learning) yang dirancang untuk siapa saja yang ingin menguasai bidang **Cyber Security**.
 
 Platform ini dibangun menggunakan teknologi statis modern (React/Next.js ecosystem + Vite) untuk memberikan performa maksimal tanpa memerlukan konfigurasi backend atau Docker yang rumit. Semua simulasi eksploitasi dan analisis direkayasa (mocking) langsung di *frontend*.
 
 ## ✨ Fitur Utama
 
-- 📚 **Silabus Lengkap LKS**: Struktur navigasi mencakup seluruh (~50) topik uji mulai dari *Infrastructure Hardening*, *Web Exploitation*, *Binary Exploitation*, hingga *Digital Forensics* dan *SOC*.
+- 📚 **Silabus Lengkap Cyber Security**: Struktur navigasi mencakup seluruh (~50) topik uji mulai dari *Infrastructure Hardening*, *Web Exploitation*, *Binary Exploitation*, hingga *Digital Forensics* dan *SOC*.
 - 🎮 **Interactive Simulators**: Belajar teori sekaligus praktik langsung! Modul dilengkapi dengan *frontend mockup* untuk simulasi kerentanan:
   - MockSQLiForm (Authentication Bypass)
   - MockCmdInjection (Router Ping Tool)

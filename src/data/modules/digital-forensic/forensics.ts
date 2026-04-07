@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const fileCarvingModule: LKSModule = {
+export const fileCarvingModule: CyberSecModule = {
   id: 'file-carving',
   slug: 'file-carving',
   title: 'File Carving',
@@ -56,7 +56,7 @@ export const fileCarvingModule: LKSModule = {
   }
 };
 
-export const networkForensicModule: LKSModule = {
+export const networkForensicModule: CyberSecModule = {
   id: 'network-forensic',
   slug: 'network-forensic',
   title: 'Network Forensic (PCAP)',
@@ -106,7 +106,7 @@ export const networkForensicModule: LKSModule = {
   }
 };
 
-export const memoryForensicModule: LKSModule = {
+export const memoryForensicModule: CyberSecModule = {
   id: 'memory-forensic',
   slug: 'memory-forensic',
   title: 'Memory Forensic',

@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const siemModule: LKSModule = {
+export const siemModule: CyberSecModule = {
   id: 'siem-utilization',
   slug: 'siem-utilization',
   title: 'SIEM Utilization',

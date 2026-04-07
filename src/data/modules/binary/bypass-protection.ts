@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const bypassProtectionModule: LKSModule = {
+export const bypassProtectionModule: CyberSecModule = {
   id: 'bypass-protection',
   slug: 'bypass-protection',
   title: 'Bypass Protection (PIE, CANARY, NX, RELRO)',

@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const pamModule: LKSModule = {
+export const pamModule: CyberSecModule = {
   id: 'linux-pam',
   slug: 'linux-pam',
   title: 'Privileged Access Management (PAM)',

@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const directoryTraversalModule: LKSModule = {
+export const directoryTraversalModule: CyberSecModule = {
   id: 'directory-traversal',
   slug: 'directory-traversal',
   title: 'Directory Traversal & File Inclusion',

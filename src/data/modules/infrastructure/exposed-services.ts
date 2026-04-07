@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const exposedServicesModule: LKSModule = {
+export const exposedServicesModule: CyberSecModule = {
   id: 'exposed-services',
   slug: 'exposed-services',
   title: 'Dangerous/Exposed Services',

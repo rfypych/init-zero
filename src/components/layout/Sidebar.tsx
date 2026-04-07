@@ -68,7 +68,7 @@ export const Sidebar = ({ isOpen, toggleSidebar }: { isOpen: boolean, toggleSide
               <Shield className="w-6 h-6 text-blue-500" />
               Init[0]
             </h2>
-            <p className="text-[11px] text-zinc-500 mt-1 uppercase tracking-widest font-semibold">LKS Nasional</p>
+            <p className="text-[11px] text-zinc-500 mt-1 uppercase tracking-widest font-semibold">Cyber Security</p>
           </div>
           <button onClick={toggleSidebar} className="lg:hidden text-zinc-400 hover:text-white">
             <X className="w-6 h-6" />

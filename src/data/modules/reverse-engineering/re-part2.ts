@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const compiledLangModule: LKSModule = {
+export const compiledLangModule: CyberSecModule = {
   id: 'compiled-language-syntax',
   slug: 'compiled-language-syntax',
   title: 'Compiled Language Syntax & Frameworks',
@@ -45,7 +45,7 @@ export const compiledLangModule: LKSModule = {
   }
 };
 
-export const mobileReModule: LKSModule = {
+export const mobileReModule: CyberSecModule = {
   id: 'mobile-re',
   slug: 'mobile-re',
   title: 'Mobile Reverse Engineering & Obfuscation',

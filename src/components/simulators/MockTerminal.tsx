@@ -48,7 +48,7 @@ export const MockTerminal: React.FC<MockTerminalProps> = ({
         {history.map((entry, i) => (
           <div key={i} className="mb-4">
             <div className="flex gap-2 text-zinc-300">
-              <span className="text-emerald-500">user@lks:~$</span>
+              <span className="text-emerald-500">user@init0:~$</span>
               <span>{entry.cmd}</span>
             </div>
             <div className="text-zinc-400 whitespace-pre-wrap mt-1">
@@ -58,7 +58,7 @@ export const MockTerminal: React.FC<MockTerminalProps> = ({
         ))}
 
         <form onSubmit={handleCommand} className="flex gap-2 text-zinc-300">
-          <span className="text-emerald-500">user@lks:~$</span>
+          <span className="text-emerald-500">user@init0:~$</span>
           <input
             type="text"
             value={input}

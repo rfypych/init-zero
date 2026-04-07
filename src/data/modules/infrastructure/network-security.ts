@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const networkSecurityModule: LKSModule = {
+export const networkSecurityModule: CyberSecModule = {
   id: 'network-service-security',
   slug: 'network-service-security',
   title: 'Network Service Security',
@@ -56,7 +56,7 @@ export const networkSecurityModule: LKSModule = {
   }
 };
 
-export const linuxLoggingModule: LKSModule = {
+export const linuxLoggingModule: CyberSecModule = {
   id: 'linux-logging',
   slug: 'linux-logging',
   title: 'Linux Logging System',

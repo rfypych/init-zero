@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const csrfModule: LKSModule = {
+export const csrfModule: CyberSecModule = {
   id: 'csrf',
   slug: 'csrf',
   title: 'Cross-Site Request Forgery (CSRF)',
@@ -50,7 +50,7 @@ export const csrfModule: LKSModule = {
   }
 };
 
-export const fileUploadModule: LKSModule = {
+export const fileUploadModule: CyberSecModule = {
   id: 'insecure-file-upload',
   slug: 'insecure-file-upload',
   title: 'Insecure File Upload',
@@ -94,7 +94,7 @@ export const fileUploadModule: LKSModule = {
   }
 };
 
-export const jwtModule: LKSModule = {
+export const jwtModule: CyberSecModule = {
   id: 'jwt',
   slug: 'jwt',
   title: 'JSON Web Token (JWT) Attacks',
@@ -139,7 +139,7 @@ export const jwtModule: LKSModule = {
   }
 };
 
-export const sstiModule: LKSModule = {
+export const sstiModule: CyberSecModule = {
   id: 'ssti',
   slug: 'ssti',
   title: 'Server Side Template Injection (SSTI)',

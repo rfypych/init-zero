@@ -1,6 +1,6 @@
-import { LKSModule } from '../../../types';
+import { CyberSecModule } from '../../../types';
 
-export const integerOverflowModule: LKSModule = {
+export const integerOverflowModule: CyberSecModule = {
   id: 'integer-overflow',
   slug: 'integer-overflow',
   title: 'Integer Overflow / Underflow',
@@ -56,7 +56,7 @@ export const integerOverflowModule: LKSModule = {
   }
 };
 
-export const shellcodeModule: LKSModule = {
+export const shellcodeModule: CyberSecModule = {
   id: 'shellcode',
   slug: 'shellcode',
   title: 'Shellcode',
@@ -116,7 +116,7 @@ export const shellcodeModule: LKSModule = {
   }
 };
 
-export const ropChainModule: LKSModule = {
+export const ropChainModule: CyberSecModule = {
   id: 'rop-chain',
   slug: 'rop-chain',
   title: 'ROP Chain (ret2libc, ret2win)',
