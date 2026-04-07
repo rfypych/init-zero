@@ -6,6 +6,7 @@ import { commandInjectionModule } from './modules/web/command-injection';
 import { directoryTraversalModule } from './modules/web/directory-traversal';
 import { idorModule, xssModule } from './modules/web/idor';
 import { csrfModule, fileUploadModule, jwtModule, sstiModule } from './modules/web/web-part2';
+import { logicErrorsModule, apiSecurityModule } from './modules/web/web-part3';
 
 // Import Infrastructure
 import { pamModule } from './modules/infrastructure/pam';
@@ -30,6 +31,11 @@ import { bufferOverflowModule } from './modules/binary/buffer-overflow';
 import { formatStringModule } from './modules/binary/format-string';
 import { bypassProtectionModule } from './modules/binary/bypass-protection';
 import { integerOverflowModule, shellcodeModule, ropChainModule } from './modules/binary/binary-part2';
+import { typeConfusionModule } from './modules/binary/binary-part3';
+
+// Import Reverse Engineering
+import { staticAnalysisModule, dynamicAnalysisModule, architectureModule } from './modules/reverse-engineering/re-part1';
+import { compiledLangModule, mobileReModule } from './modules/reverse-engineering/re-part2';
 
 // Helper to create placeholder modules
 const createPlaceholder = (title: string, category: LKSModule['category'], slug: string): LKSModule => ({
@@ -61,10 +67,9 @@ export const syllabus: SyllabusItem[] = [
       classicalCiphersModule,
       createPlaceholder('Attack on RSA', 'Offensive / Red Team Based CTF', 'attack-on-rsa'),
       createPlaceholder('Attack on PRNG', 'Offensive / Red Team Based CTF', 'attack-on-prng'),
-      createPlaceholder('Attack on AES', 'Offensive / Red Team Based CTF', 'attack-on-aes'),
-      createPlaceholder('Attack on ECC', 'Offensive / Red Team Based CTF', 'attack-on-ecc'),
-      createPlaceholder('Attack on DSA', 'Offensive / Red Team Based CTF', 'attack-on-dsa'),
-      createPlaceholder('Hashing', 'Offensive / Red Team Based CTF', 'hashing-length-extension'),
+      createPlaceholder('Attack on AES & Block Ciphers', 'Offensive / Red Team Based CTF', 'attack-on-aes'),
+      createPlaceholder('Attack on ECC & DSA', 'Offensive / Red Team Based CTF', 'attack-on-ecc-dsa'),
+      createPlaceholder('Hashing (Length Extension Attack)', 'Offensive / Red Team Based CTF', 'hashing-length-extension'),
     ]
   },
   {
@@ -80,21 +85,8 @@ export const syllabus: SyllabusItem[] = [
       fileUploadModule,
       jwtModule,
       sstiModule,
-      createPlaceholder('Account Takeover', 'Web Exploitation', 'account-takeover'),
-      createPlaceholder('Business Logic Errors', 'Web Exploitation', 'business-logic-errors'),
-      createPlaceholder('CVE Exploits', 'Web Exploitation', 'cve-exploits'),
-      createPlaceholder('Dependency Confusion', 'Web Exploitation', 'dependency-confusion'),
-      createPlaceholder('GraphQL Injection', 'Web Exploitation', 'graphql-injection'),
-      createPlaceholder('HTTP Parameter Pollution', 'Web Exploitation', 'http-parameter-pollution'),
-      createPlaceholder('Insecure Deserialization', 'Web Exploitation', 'insecure-deserialization'),
-      createPlaceholder('NoSQL Injection', 'Web Exploitation', 'nosql-injection'),
-      createPlaceholder('Prototype Pollution', 'Web Exploitation', 'prototype-pollution'),
-      createPlaceholder('Race Condition', 'Web Exploitation', 'race-condition'),
-      createPlaceholder('Request Smuggling', 'Web Exploitation', 'request-smuggling'),
-      createPlaceholder('Type Juggling', 'Web Exploitation', 'type-juggling'),
-      createPlaceholder('Web Sockets', 'Web Exploitation', 'web-sockets'),
-      createPlaceholder('XXE Injection', 'Web Exploitation', 'xxe'),
-      createPlaceholder('OWASP API Security Top 10', 'Web Exploitation', 'owasp-api-top-10'),
+      logicErrorsModule,
+      apiSecurityModule,
     ],
   },
   {
@@ -107,23 +99,18 @@ export const syllabus: SyllabusItem[] = [
       formatStringModule,
       ropChainModule,
       bypassProtectionModule,
-      createPlaceholder('Type Confusion', 'Binary Exploitation', 'type-confusion'),
-      createPlaceholder('Uninitialized Memory', 'Binary Exploitation', 'uninitialized-memory'),
+      typeConfusionModule,
     ]
   },
   {
     id: 'reverse-engineering',
     title: 'Reverse Engineering',
     modules: [
-      createPlaceholder('Static Analysis (Reconstruct Algorithm)', 'Reverse Engineering', 'static-analysis'),
-      createPlaceholder('Dynamic Analysis (Tracing, GDB)', 'Reverse Engineering', 'dynamic-analysis'),
-      createPlaceholder('Low Level File Formats', 'Reverse Engineering', 'low-level-file-formats'),
-      createPlaceholder('Anti RE', 'Reverse Engineering', 'anti-re'),
-      createPlaceholder('Compiled Language Syntax Format', 'Reverse Engineering', 'compiled-language-syntax'),
-      createPlaceholder('Arsitektur: x86_64, x64, ARM', 'Reverse Engineering', 'architecture'),
-      createPlaceholder('Special Framework', 'Reverse Engineering', 'special-frameworks'),
-      createPlaceholder('Obfuscation & Binary Patching', 'Reverse Engineering', 'obfuscation-patching'),
-      createPlaceholder('Mobile Reverse Engineering', 'Reverse Engineering', 'mobile-re'),
+      staticAnalysisModule,
+      dynamicAnalysisModule,
+      architectureModule,
+      compiledLangModule,
+      mobileReModule,
     ]
   },
   {
