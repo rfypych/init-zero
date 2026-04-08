@@ -5,71 +5,94 @@ export const sqlInjectionModule: CyberSecModule = {
   slug: 'sql-injection',
   title: 'SQL Injection (SQLi)',
   category: 'Web Exploitation',
-  description: 'Memahami bagaimana input user yang tidak divalidasi dapat memanipulasi query database backend.',
+  description: 'Memahami dan mengeksploitasi celah di mana input user secara langsung memodifikasi query database backend, mengizinkan Authentication Bypass hingga eksekusi RCE.',
   sections: [
     {
-      id: 'what-is-sqli',
-      title: 'Apa itu SQL Injection?',
+      id: 'objective',
+      title: 'Mission Objective',
       blocks: [
         {
           id: '1',
-          type: 'text',
-          content: 'Bayangkan Anda sedang memesan kopi di Starbucks. Anda bilang: "Satu kopi latte, **dan tolong berikan saya semua uang di kasir**". Jika kasirnya robot yang langsung melakukan apa saja yang diucapkan tanpa memfilter bagian tebal tadi, Anda baru saja melakukan "Injection".'
-        },
+          type: 'alert',
+          content: 'Target: Panel Login Admin Internal.\nGoal: Masuk sebagai administrator tanpa mengetahui password asli.',
+          metadata: { type: 'warning' }
+        }
+      ]
+    },
+    {
+      id: 'what-is-sqli',
+      title: 'The Vulnerability (TL;DR)',
+      blocks: [
         {
           id: '2',
           type: 'text',
-          content: 'Dalam web, **SQL Injection (SQLi)** terjadi ketika aplikasi mengambil input dari user (seperti username/password) dan langsung memasukkannya ke dalam perintah (query) database tanpa disaring.'
+          content: 'Dalam web, **SQL Injection (SQLi)** terjadi ketika aplikasi mengambil input dari user (seperti form username/password) dan langsung menyambungkannya (concatenation) ke dalam baris perintah database (SQL) tanpa di-filter atau di-escape.'
         },
         {
           id: '3',
-          type: 'alert',
-          content: 'Dampaknya fatal: Hacker bisa melihat data pengguna lain (Data Breach), memanipulasi saldo, atau masuk sebagai Admin tanpa password (Authentication Bypass).',
-          metadata: { type: 'danger' }
+          type: 'text',
+          content: 'Akibatnya, database tidak bisa membedakan mana yang merupakan "Data" (input user) dan mana yang merupakan "Kode" (perintah SQL asli). User dapat memasukkan karakter penutup string (seperti tanda kutip tunggal) lalu menulis perintah SQL mereka sendiri di sebelahnya.'
         }
       ]
     },
     {
       id: 'anatomy-of-sqli',
-      title: 'Anatomi Serangan',
+      title: 'Anatomi Serangan (Authentication Bypass)',
       blocks: [
         {
           id: '4',
           type: 'text',
-          content: 'Mari kita lihat kode PHP jadul yang rentan. Variabel `$user` langsung ditempel ke dalam string query:'
+          content: 'Perhatikan potongan kode backend (Node.js/PHP) yang rentan di bawah ini:'
         },
         {
           id: '5',
           type: 'code',
-          content: `$query = "SELECT * FROM users WHERE username = '" . $_POST['user'] . "' AND password = '" . $_POST['pass'] . "'";`,
-          metadata: { language: 'php' }
+          content: "// string query dibangun langsung dari input body HTTP request\nconst query = \"SELECT * FROM users WHERE username = '\" + req.body.user + \"' AND password = '\" + req.body.pass + \"'\";\ndb.execute(query);",
+          metadata: { language: 'javascript' }
         },
         {
           id: '6',
           type: 'text',
-          content: 'Apa jadinya jika hacker memasukkan `admin\' OR \'1\'=\'1` pada form username, dan membiarkan password kosong? Query di server akan berubah menjadi:'
+          content: "Apa jadinya jika hacker memasukkan `admin' OR '1'='1` pada form username, dan membiarkan password kosong?"
         },
         {
           id: '7',
           type: 'code',
-          content: `SELECT * FROM users WHERE username = 'admin' OR '1'='1' AND password = ''`,
+          content: "SELECT * FROM users WHERE username = 'admin' OR '1'='1' AND password = ''",
           metadata: { language: 'sql' }
         },
         {
           id: '8',
           type: 'text',
-          content: 'Karena `1=1` itu **selalu benar**, database akan mengabaikan syarat password dan langsung memberikan akses ke akun `admin`!'
+          content: 'Database membaca logika ini sebagai: "Berikan saya data user di mana usernamenya adalah admin, ATAU di mana 1 sama dengan 1". Karena 1=1 itu adalah pernyataan matematika yang **selalu benar (TRUE)**, seluruh logika evaluasi password diabaikan, dan database akan langsung mereturn baris pertama tabel (yang biasanya adalah akun admin)!'
+        }
+      ]
+    },
+    {
+      id: 'real-world-ctf',
+      title: 'Real-World CTF Approach (Tooling)',
+      blocks: [
+        {
+          id: '13',
+          type: 'text',
+          content: 'Di kompetisi CTF nyata, Anda akan sering berhadapan dengan *Blind SQLi* (di mana error tidak ditampilkan di layar) atau *Union-Based SQLi* (untuk membaca isi tabel lain). Tools otomatis seperti **SQLMap** sangat krusial.'
+        },
+        {
+          id: '14',
+          type: 'code',
+          content: "# Menyimpan request login yang dicegat via Burp Suite ke file req.txt\n# Lalu memerintahkan SQLMap untuk mengeksploitasinya secara otomatis\nsqlmap -r req.txt --dbs --batch --random-agent\n\n# Jika database ditemukan (misal: \"ctf_db\"), dump seluruh isinya:\nsqlmap -r req.txt -D ctf_db --dump-all",
+          metadata: { language: 'bash' }
         }
       ]
     },
     {
       id: 'interactive-simulator',
-      title: 'Lab Interaktif: Authentication Bypass',
+      title: 'Live Lab: Backend Execution',
       blocks: [
         {
           id: '9',
           type: 'text',
-          content: 'Coba langsung konsep di atas. Tugas Anda adalah masuk sebagai Admin tanpa mengetahui passwordnya.'
+          content: 'Simulator di bawah ini sekarang **BUKAN MOCKING FRONTEND**. Ia benar-benar mengirim request HTTP POST `application/json` ke backend Node.js + SQLite di localhost Anda. Coba lakukan *Authentication Bypass* dengan memanipulasi form.'
         },
         {
           id: '10',
@@ -81,18 +104,18 @@ export const sqlInjectionModule: CyberSecModule = {
     },
     {
       id: 'mitigation',
-      title: 'Cara Mencegah (Mitigasi)',
+      title: 'The Fix (Mitigasi)',
       blocks: [
         {
           id: '11',
           type: 'text',
-          content: 'Cara terbaik mencegah SQLi adalah dengan memisahkan *query logic* dan *user data*. Gunakan **Prepared Statements (Parameterized Queries)**.'
+          content: 'Satu-satunya cara ampuh 100% untuk mencegah SQLi adalah dengan memisahkan *Query Logic* dan *User Data* secara total di level protokol database. Ini disebut **Prepared Statements (Parameterized Queries)**.'
         },
         {
           id: '12',
           type: 'code',
-          content: `// Contoh aman menggunakan PDO di PHP\n$stmt = $pdo->prepare('SELECT * FROM users WHERE username = :user AND password = :pass');\n$stmt->execute(['user' => $user, 'pass' => $pass]);\n$user = $stmt->fetch();`,
-          metadata: { language: 'php' }
+          content: "// Contoh AMAN menggunakan Parameterized Queries di Node.js (sqlite3)\nconst stmt = db.prepare('SELECT * FROM users WHERE username = ? AND password = ?');\nstmt.get([username, password], (err, row) => { ... });",
+          metadata: { language: 'javascript' }
         }
       ]
     }
@@ -100,8 +123,8 @@ export const sqlInjectionModule: CyberSecModule = {
   quiz: {
     id: 'q_sqli_1',
     type: 'flag_submission',
-    question: 'Berdasarkan simulasi Lab Interaktif di atas, temukan flag tersembunyi dengan melakukan Authentication Bypass!',
-    flag: 'INIT0{SQLi_1s_n0t_d3ad}',
-    explanation: 'Selamat! Anda telah memahami konsep fundamental SQL Injection untuk melewati mekanisme login.'
+    question: 'Berdasarkan Live Lab di atas, temukan flag tersembunyi dengan masuk sebagai administrator menggunakan injeksi `OR 1=1`!',
+    flag: 'INIT0{Un10n_B4s3d_M4st3r}',
+    explanation: 'Target Compromised! Anda berhasil memanipulasi logika boolean SQL. Dalam skenario nyata, serangan Union-Based dapat digunakan untuk membongkar tabel `users` untuk mengekstrak hash password secara massal.'
   }
 };
