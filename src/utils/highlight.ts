@@ -1,3 +1,5 @@
+import katex from 'katex';
+
 // Utility to auto-highlight important cyber security terms
 
 const termMap: Record<string, string> = {
@@ -20,6 +22,18 @@ const termMap: Record<string, string> = {
 
 export const enhanceText = (text: string): string => {
   let processed = text;
+
+  // Render LaTeX math enclosed in $ ... $
+  // We use regex to find $...$ making sure it's not empty, and then pass it to katex.renderToString
+  // Note: we need to handle this before replacing newlines or italics to prevent conflicts
+  processed = processed.replace(/\$(.*?)\$/g, (match, formula) => {
+    try {
+      // return the rendered HTML as inline math
+      return katex.renderToString(formula, { throwOnError: false, displayMode: false });
+    } catch (e) {
+      return match; // fallback to original text if KaTeX fails
+    }
+  });
 
   // Basic markdown bold to HTML
   processed = processed.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white font-bold">$1</strong>');
