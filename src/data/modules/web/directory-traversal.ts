@@ -5,44 +5,94 @@ export const directoryTraversalModule: CyberSecModule = {
   slug: 'directory-traversal',
   title: 'Directory Traversal & File Inclusion',
   category: 'Web Exploitation',
-  description: 'Mengeksploitasi fitur baca file untuk mengakses file sensitif di luar direktori web.',
+  description: 'Memanipulasi aplikasi web (LFI / RFI) untuk mengekstraksi file sensitif di luar direktori web yang seharusnya tidak dapat diakses.',
   sections: [
     {
-      id: 'concept',
-      title: 'Keluar dari Kandang',
+      id: 'objective',
+      title: 'Mission Objective',
       blocks: [
         {
           id: '1',
-          type: 'text',
-          content: 'Directory Traversal (atau Path Traversal) terjadi ketika aplikasi membaca file berdasarkan parameter input pengguna tanpa memvalidasi path-nya.'
-        },
+          type: 'alert',
+          content: 'Target: Aplikasi penampil dokumen/gambar (File Viewer).\nGoal: Membaca file password sistem operasi (`/etc/passwd`) untuk mendapatkan daftar username Linux host.',
+          metadata: { type: 'warning' }
+        }
+      ]
+    },
+    {
+      id: 'concept',
+      title: 'The Vulnerability (TL;DR)',
+      blocks: [
         {
           id: '2',
           type: 'text',
-          content: 'Dalam sistem Linux/Unix, notasi `../` berarti "naik satu direktori ke atas". Hacker menggunakan notasi ini berulang kali untuk "keluar" dari folder aplikasi web (misal: `/var/www/html`) dan menuju ke root sistem ( `/` ).'
+          content: 'Directory Traversal (juga dikenal sebagai Path Traversal) adalah cacat desain ketika aplikasi membaca file berdasarkan input dari pengguna tanpa melakukan validasi apakah file tersebut benar-benar berada di folder yang diizinkan (Base Directory).'
         },
         {
           id: '3',
+          type: 'text',
+          content: 'Dalam sistem Linux/Unix maupun Windows, notasi titik-titik-garis-miring `../` (Dot-Dot-Slash) adalah perintah sistem untuk "naik satu direktori ke atas". Hacker akan menggandakan notasi ini untuk "keluar" (traverse) dari folder aplikasi web (misal: `/var/www/html/images/`) dan menuju ke Root direktori sistem ( `/` ).'
+        },
+        {
+          id: '4',
           type: 'code',
-          content: 'http://example.com/getImage?file=../../../etc/passwd',
+          content: `// URL yang tampak normal:\nhttp://example.com/download?file=laporan.pdf\n\n// Payload Path Traversal:\nhttp://example.com/download?file=../../../../../../etc/passwd`,
           metadata: { language: 'http' }
         }
       ]
     },
     {
-      id: 'interactive-simulator',
-      title: 'Lab Interaktif: File Viewer',
+      id: 'real-world-ctf',
+      title: 'Real-World CTF Approach (Local File Inclusion)',
       blocks: [
         {
-          id: '4',
+          id: '5',
           type: 'text',
-          content: 'Aplikasi ini dirancang untuk menampilkan gambar. Bisakah Anda mengubah path-nya untuk membaca file `/etc/passwd` Linux?'
+          content: 'Kombinasi Traversal dengan Include (LFI) sangat berbahaya di bahasa seperti PHP (`include($_GET[\'page\']);`). Jika aplikasi menginklusikan file, ia juga akan *mengeksekusi* isinya sebagai kode PHP.'
         },
         {
-          id: '5',
+          id: '6',
+          type: 'text',
+          content: 'Di lomba CTF, jika hacker menemukan Traversal tetapi file yang dibaca disensor atau ditambahi ekstensi `.php` secara otomatis, mereka akan menggunakan teknik *PHP Wrappers* (seperti `php://filter/convert.base64-encode/resource=index`) untuk memaksa server mengembalikan isi file (source code) dalam bentuk Base64 yang dapat didekode.'
+        },
+        {
+          id: '7',
+          type: 'text',
+          content: 'LFI-to-RCE (Mendapatkan kontrol penuh dari LFI) juga dapat dicapai dengan teknik "Log Poisoning", di mana hacker menyisipkan Payload ke `/var/log/apache2/access.log` (via User-Agent saat HTTP Request) lalu membaca log tersebut lewat LFI!'
+        }
+      ]
+    },
+    {
+      id: 'interactive-simulator',
+      title: 'Live Lab: Backend File System',
+      blocks: [
+        {
+          id: '8',
+          type: 'text',
+          content: 'Aplikasi ini dirancang untuk menampilkan gambar atau dokumen teks dengan fungsi Node.js `fs.readFile()` dari folder `public_files/`. Bisakah Anda menggunakan pola `../` pada parameter `?file=` untuk keluar dari folder tersebut dan membaca file Linux `/etc/passwd`?'
+        },
+        {
+          id: '9',
           type: 'interactive',
           content: 'MockDirTraversal',
           metadata: { component: 'MockDirTraversal' }
+        }
+      ]
+    },
+    {
+      id: 'mitigation',
+      title: 'The Fix (Mitigasi)',
+      blocks: [
+        {
+          id: '10',
+          type: 'text',
+          content: 'Mencegah Traversal bisa dilakukan dengan menggunakan referensi indeks (misal: `?file_id=5` dipetakan ke nama file di database). Jika Anda HARUS menggunakan string nama file, pastikan untuk menggunakan fungsi resolve path dan memverifikasi bahwa *resolved path* dimulai dengan *base path* direktori yang diizinkan.'
+        },
+        {
+          id: '11',
+          type: 'code',
+          content: `// Contoh mitigasi aman di Node.js\nconst BASE_DIR = path.resolve('/var/www/uploads');\nconst userPath = path.resolve(BASE_DIR, req.query.file);\n\n// Verifikasi ketat\nif (!userPath.startsWith(BASE_DIR)) {\n  return res.status(403).send('Forbidden: Path traversal attempt!');\n}`,
+          metadata: { language: 'javascript' }
         }
       ]
     }
@@ -50,8 +100,8 @@ export const directoryTraversalModule: CyberSecModule = {
   quiz: {
     id: 'q_dt_1',
     type: 'flag_submission',
-    question: 'Berdasarkan file /etc/passwd yang berhasil Anda baca di lab atas, temukan dan masukkan flag yang tersembunyi!',
+    question: 'Berdasarkan file `/etc/passwd` yang berhasil Anda baca di Live Lab atas, perhatikan detailnya baik-baik untuk menemukan Flag tersembunyi yang diletakkan di sana!',
     flag: 'INIT0{P4th_Tr4v3rs4l_M4st3r}',
-    explanation: 'Sempurna. Mencegah kerentanan ini bisa dilakukan dengan memvalidasi path (memastikan file berada di dalam base directory) atau menggunakan referensi indirect (misal file id berupa angka, bukan nama file).'
+    explanation: 'Target Compromised! LFI sangat mematikan di server tanpa mekanisme sandboxing yang ketat karena memberikan visibilitas penuh ke OS, seperti membaca file konfigurasi `wp-config.php` untuk mendapatkan credential database.'
   }
 };
