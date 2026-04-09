@@ -29,7 +29,7 @@ export const enhanceText = (text: string): string => {
   processed = processed.replace(/\$(.*?)\$/g, (match, formula) => {
     try {
       // return the rendered HTML as inline math
-      return katex.renderToString(formula, { throwOnError: false, displayMode: false });
+      return katex.renderToString(formula, { throwOnError: false, displayMode: false, output: 'html' });
     } catch (e) {
       return match; // fallback to original text if KaTeX fails
     }
