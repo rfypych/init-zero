@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Quiz } from '../../types';
-import { CheckCircle2, XCircle, Trophy, Flag, Lock, Lightbulb, Terminal } from 'lucide-react';
+import { CheckCircle2, XCircle, Trophy, Flag, Lock, Lightbulb, Terminal, Eye, EyeOff } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useProgressStore } from '../../store/progressStore';
 import { useParams } from 'react-router-dom';
@@ -16,14 +16,14 @@ export const QuizSystem = ({ quiz }: { quiz: Quiz }) => {
   const [flagInput, setFlagInput] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(isAlreadyCompleted);
   const [wasCorrect, setWasCorrect] = useState(isAlreadyCompleted);
-  const [showHint, setShowHint] = useState(false);
+  const [hintLevel, setHintLevel] = useState(0);
 
   // Sync state if navigating between already completed modules
   useEffect(() => {
     if (slug && isModuleCompleted(slug)) {
       setIsSubmitted(true);
       setWasCorrect(true);
-      setShowHint(false);
+      setHintLevel(0);
       // For visual feedback on already completed:
       if (quiz.type === 'flag_submission') {
          setFlagInput(quiz.flag);
@@ -36,7 +36,7 @@ export const QuizSystem = ({ quiz }: { quiz: Quiz }) => {
       setWasCorrect(false);
       setSelectedOption(null);
       setFlagInput('');
-      setShowHint(false);
+      setHintLevel(0);
     }
   }, [slug, quiz, isModuleCompleted]);
 
@@ -76,6 +76,16 @@ export const QuizSystem = ({ quiz }: { quiz: Quiz }) => {
   if (quiz.type === 'log_analysis') {
     return null;
   }
+
+  // Generate generic hints if none provided, but we strongly prefer explicit hints now
+  const hints = quiz.hints && quiz.hints.length > 0
+    ? quiz.hints
+    : [
+        "Gunakan simulator/lab interaktif yang ada di materi di atas.",
+        "Eksploitasi kerentanannya sampai muncul teks 'FLAG: INIT0{...}'. Copy dan paste flag tersebut ke form ini."
+      ];
+
+  const totalHints = hints.length;
 
   return (
     <div className="mt-16 border-t border-zinc-800 pt-10" id="quiz">
@@ -184,30 +194,39 @@ export const QuizSystem = ({ quiz }: { quiz: Quiz }) => {
                )}
              </div>
 
+             {/* HINT SYSTEM FOR BEGINNERS */}
              {!isSubmitted && (
-               <div className="pt-2">
-                 <button
-                   onClick={() => setShowHint(!showHint)}
-                   className="flex items-center gap-2 text-sm text-zinc-400 hover:text-yellow-400 transition-colors"
-                 >
-                   <Lightbulb className={`w-4 h-4 ${showHint ? 'text-yellow-400' : ''}`} />
-                   {showHint ? 'Hide Intelligence' : 'Need Intelligence / Hint?'}
-                 </button>
+               <div className="pt-4 border-t border-zinc-800/50">
+                 <div className="flex items-center justify-between mb-3">
+                   <div className="text-sm font-bold text-zinc-400 uppercase tracking-widest flex items-center gap-2">
+                     <Lightbulb className="w-4 h-4 text-yellow-500" /> Tactical Intelligence (Hints)
+                   </div>
+                   <span className="text-xs text-zinc-500 font-mono">Revealed: {hintLevel} / {totalHints}</span>
+                 </div>
 
-                 <AnimatePresence>
-                   {showHint && (
-                     <motion.div
-                       initial={{ opacity: 0, height: 0 }}
-                       animate={{ opacity: 1, height: 'auto' }}
-                       exit={{ opacity: 0, height: 0 }}
-                       className="overflow-hidden"
-                     >
-                       <div className="mt-4 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg text-sm text-yellow-200/90 leading-relaxed font-mono">
-                         &gt; ACTION_REQUIRED: Gunakan simulator/lab interaktif yang ada di materi di atas. Eksploitasi kerentanannya sampai muncul teks "FLAG: INIT0{'{...}'}". Copy dan paste flag tersebut ke form ini.
-                       </div>
-                     </motion.div>
-                   )}
-                 </AnimatePresence>
+                 <div className="space-y-3">
+                   {hints.map((hint, index) => (
+                     <div key={index} className={`p-4 rounded-xl border ${hintLevel > index ? 'bg-yellow-500/10 border-yellow-500/20' : 'bg-zinc-950/50 border-zinc-800'}`}>
+                       {hintLevel > index ? (
+                         <div className="text-[15px] text-yellow-100/90 leading-relaxed font-mono flex items-start gap-3">
+                           <span className="text-yellow-500 font-bold">[{index + 1}]</span>
+                           <span dangerouslySetInnerHTML={{ __html: enhanceText(hint) }} />
+                         </div>
+                       ) : hintLevel === index ? (
+                         <button
+                           onClick={() => setHintLevel(hintLevel + 1)}
+                           className="w-full py-2 text-sm text-zinc-400 hover:text-yellow-400 font-medium transition-colors flex items-center justify-center gap-2"
+                         >
+                           <Eye className="w-4 h-4" /> Request Hint {index + 1}
+                         </button>
+                       ) : (
+                         <div className="py-2 text-sm text-zinc-600 font-medium flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+                           <Lock className="w-4 h-4" /> Hint {index + 1} Locked
+                         </div>
+                       )}
+                     </div>
+                   ))}
+                 </div>
                </div>
              )}
           </div>

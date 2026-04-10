@@ -20,6 +20,7 @@ export interface BaseQuiz {
   type: QuizType;
   question: string;
   explanation?: string;
+  hints?: string[]; // Progressive hints for beginners
 }
 
 export interface MCQQuiz extends BaseQuiz {
@@ -58,11 +59,11 @@ export interface CyberSecModule {
 }
 
 export type SyllabusCategory =
+  | 'Bootcamp 101'
   | 'Infrastructure Hardening'
   | 'Offensive / Red Team Based CTF'
   | 'Web Exploitation'
   | 'Binary Exploitation'
-  | 'Defensive / Blue Team Based CTF'
   | 'Reverse Engineering'
   | 'Digital Forensic'
   | 'SOC';

@@ -140,6 +140,7 @@ export const bufferOverflowModule: CyberSecModule = {
     type: 'flag_submission',
     question: 'Berdasarkan Lab Code Analysis di atas, submit flag yang didapat setelah memilih dan memahami baris kode yang menyebabkan kerentanan Buffer Overflow (BoF):',
     flag: 'INIT0{N3v3r_Us3_g3ts_In_C}',
+    hints: ['Fungsi `printf` dan `strcmp` aman digunakan asalkan parameternosnya benar.', 'Perhatikan fungsi di baris ke-6. Fungsi ini membaca input user tanpa batas maksimal.', 'Pilih baris yang mengandung fungsi `gets(buffer);` lalu klik tombol Submit Analysis merah di kanan atas.'],
     explanation: 'Target Compromised! Ingatlah, memori stack bukan hanya menyimpan variabel lokal, tapi juga alamat balik eksekusi (Return Address). Jika buffer overflow menimpa Return Address, program akan melompat dan mengeksekusi instruksi dari alamat memori acak pilihan si penyerang.'
   }
 };

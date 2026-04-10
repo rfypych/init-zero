@@ -102,6 +102,7 @@ export const directoryTraversalModule: CyberSecModule = {
     type: 'flag_submission',
     question: 'Berdasarkan file `/etc/passwd` yang berhasil Anda baca di Live Lab atas, perhatikan detailnya baik-baik untuk menemukan Flag tersembunyi yang diletakkan di sana!',
     flag: 'INIT0{P4th_Tr4v3rs4l_M4st3r}',
+    hints: ['Scroll ke Live Lab.', 'Ubah path default `images/logo.png` menjadi `../` untuk mundur satu folder.', 'Lakukan mundur beberapa kali dengan mengetik `../../../../`', 'Lalu arahkan ke file rahasia linux dengan mengetik `../../../../etc/passwd` dan klik Load File.'],
     explanation: 'Target Compromised! LFI sangat mematikan di server tanpa mekanisme sandboxing yang ketat karena memberikan visibilitas penuh ke OS, seperti membaca file konfigurasi `wp-config.php` untuk mendapatkan credential database.'
   }
 };

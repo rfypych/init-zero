@@ -1,5 +1,10 @@
 import { SyllabusItem, CyberSecModule } from '../types';
 
+// Import Bootcamp 101
+import { linux101Module } from './modules/bootcamp/linux-101';
+import { web101Module } from './modules/bootcamp/web-101';
+import { networking101Module } from './modules/bootcamp/networking-101';
+
 // Import Web
 import { sqlInjectionModule } from './modules/web/sql-injection';
 import { commandInjectionModule } from './modules/web/command-injection';
@@ -38,9 +43,16 @@ import { typeConfusionModule } from './modules/binary/binary-part3';
 import { staticAnalysisModule, dynamicAnalysisModule, architectureModule } from './modules/reverse-engineering/re-part1';
 import { compiledLangModule, mobileReModule } from './modules/reverse-engineering/re-part2';
 
-// We no longer need the placeholder helper since the syllabus is 100% complete!
-
 export const syllabus: SyllabusItem[] = [
+  {
+    id: 'bootcamp-101',
+    title: 'Bootcamp 101 (Fundamental)',
+    modules: [
+      linux101Module,
+      web101Module,
+      networking101Module,
+    ]
+  },
   {
     id: 'infrastructure-hardening',
     title: 'Infrastructure Hardening',

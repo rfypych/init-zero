@@ -125,6 +125,7 @@ export const sqlInjectionModule: CyberSecModule = {
     type: 'flag_submission',
     question: 'Berdasarkan Live Lab di atas, temukan flag tersembunyi dengan masuk sebagai administrator menggunakan injeksi `OR 1=1`!',
     flag: 'INIT0{Un10n_B4s3d_M4st3r}',
+    hints: ['Scroll ke atas ke bagian Live Lab.', 'Ketik kata `admin` di kolom Username.', 'Tambahkan teks `\' OR \'1\'=\'1` setelah kata admin tersebut sehingga menjadi `admin\' OR \'1\'=\'1`.', 'Kosongkan password dan klik Login.'],
     explanation: 'Target Compromised! Anda berhasil memanipulasi logika boolean SQL. Dalam skenario nyata, serangan Union-Based dapat digunakan untuk membongkar tabel `users` untuk mengekstrak hash password secara massal.'
   }
 };

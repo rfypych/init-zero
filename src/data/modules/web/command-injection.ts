@@ -107,6 +107,7 @@ export const commandInjectionModule: CyberSecModule = {
     type: 'flag_submission',
     question: 'Berdasarkan uji coba di Live Lab di atas, gunakan `ls` untuk mencari file yang mencurigakan, kemudian baca isinya dengan `cat` untuk mendapatkan hadiah Anda:',
     flag: 'INIT0{RCE_V1a_P1ng_Ut1l}',
+    hints: ['Scroll ke bagian Live Lab.', 'Ketik sembarang IP, misalnya `8.8.8.8`', 'Tambahkan titik koma (;) lalu ketik `ls`. Contoh: `8.8.8.8; ls`. Klik Ping Target.', 'Anda akan melihat file `flag.txt` di server shell. Sekarang ubah inputnya menjadi `8.8.8.8; cat flag.txt` untuk membaca isinya.'],
     explanation: 'Target Compromised! Anda berhasil merangkai beberapa baris perintah OS Linux menggunakan Shell Separators (`;`). Command Injection sangat mematikan karena ia merupakan pintu langsung ke layer Sistem Operasi host.'
   }
 };
